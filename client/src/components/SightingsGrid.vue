@@ -4,13 +4,15 @@
 			<h2>{{ sighting.species }}</h2>
 			<p>{{ sighting.location }} on {{ sighting.date|format }}</p>
 
-			<button>Delete Sighting</button>
+			<button v-on:click="sightingDeleted(sighting._id)">Delete Sighting</button>
 		</div>
 	</div>
 </template>
 
 <script>
 import { eventBus } from '../main';
+import SightingService from '../services/SightingService';
+
 export default {
 	name: "sightings-grid",
 	props: ["sightings"],
@@ -20,7 +22,10 @@ export default {
 		}
 	},
 	methods: {
-
+		sightingDeleted(id){
+			SightingService.deleteSighting(id)
+			.then(res => eventBus.$emit('sighting-deleted', id));
+		}
 	}
 }
 </script>
